@@ -5,7 +5,7 @@ import game.eventListener;
 
 public class Game {
 
-    public static void main(String[] args) {
+    static void run() {
         JFrame rootWindow = new JFrame("Flag Quiz");
         rootWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         rootWindow.setSize(800, 600);
@@ -27,5 +27,9 @@ public class Game {
 
         rootWindow.add(gamePanel);
         rootWindow.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        run();
     }
 }
