@@ -1,18 +1,21 @@
 package src;
 
+import java.io.File;
 import javax.swing.*;
 
-public class GUI {
+public class Game {
 
     private JFrame rootFrame;
+    private String[] flagPaths;
 
     public void run() {
-        setup();
+        this.flagPaths = getFlagPaths();
+        setupGUI();
         this.rootFrame.pack();
         this.rootFrame.setVisible(true);
     }
 
-    private void setup() {
+    private void setupGUI() {
         // Root Window
         this.rootFrame = new JFrame("Flag Quiz");
         this.rootFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,5 +34,12 @@ public class GUI {
         gamePanel.add(answerLabel);
         gamePanel.add(answerField);
         gamePanel.add(answerButton);
+    }
+
+    private String[] getFlagPaths() {
+        String currentDir = new File(".").getAbsolutePath();
+        File assets = new File(currentDir + "/assets/");
+        String[] filePaths = assets.list();
+        return filePaths;
     }
 }
