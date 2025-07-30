@@ -1,83 +1,91 @@
 package src;
 
-import java.awt.Image;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.Random;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
 import javax.swing.*;
+
 
 public class Game {
 
-    private String[] flagPaths;
+    // State Variables
     private String assetsDir;
     private long gameSeed;
     private int score;
+    private int maxScore;
+    private ArrayList<String> flagPaths;
 
+    // GUI Components
     private JFrame rootFrame;
-    private JLabel flagLabel;
-    private JTextField answerField;
+    private JPanel gamePanel;
     private JLabel scoreLabel;
-    
+    private JLabel flagLabel;
+    private JLabel answerLabel;
+    private JTextField answerField;
+    private JButton answerButton;
+
+
     public void run() {
+        // Initialize State and Components
+        setupGame();
         setupGUI();
+
+        // Start Game
         this.rootFrame.pack();
         this.rootFrame.setVisible(true);
     }
 
-    private void setupGUI() {
-        this.assetsDir = getAssetsDir();
-        this.flagPaths = getFlagPaths();
+    private void setupGame() {
+        getAssetsDir();
+        getFlagPaths();
         this.gameSeed = System.currentTimeMillis();
+        this.maxScore = this.flagPaths.size();
         this.score = 0;
+    }
 
-        // Root Window
+    private void setupGUI() {
         this.rootFrame = new JFrame("Flag Quiz");
         this.rootFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Main Game Panel
-        JPanel gamePanel = new JPanel();
-        this.rootFrame.add(gamePanel);
+        this.gamePanel = new JPanel();
+        this.rootFrame.add(this.gamePanel);
 
-        // Components
-        this.scoreLabel = new JLabel(Integer.toString(this.score));
-
+        this.scoreLabel = new JLabel(Integer.toString(this.score) + '/' + Integer.toString(this.maxScore));
         this.flagLabel = new JLabel();
-        nextFlag(this.gameSeed);
-
-        JLabel answerLabel = new JLabel("Answer:");
+        updateFlag(this.gameSeed);
+        this.answerLabel = new JLabel("Answer:");
         this.answerField = new JTextField(20);
 
-        JButton answerButton = new JButton("Submit");
-        answerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
+        this.answerButton = new JButton("Submit");
+        this.answerButton.addActionListener(event -> {
                 submitHandler();
-            }
         });
 
-        gamePanel.add(this.scoreLabel);
-        gamePanel.add(this.flagLabel);
-        gamePanel.add(answerLabel);
-        gamePanel.add(this.answerField);
-        gamePanel.add(answerButton);
+        this.gamePanel.add(this.scoreLabel);
+        this.gamePanel.add(this.flagLabel);
+        this.gamePanel.add(this.answerLabel);
+        this.gamePanel.add(this.answerField);
+        this.gamePanel.add(this.answerButton);
     }
 
-    private String[] getFlagPaths() {
+    
+    private void getAssetsDir() {
+        this.assetsDir =  new File(".").getAbsolutePath() + "/assets/";
+    }
+
+    private void getFlagPaths() {
         File assets = new File(this.assetsDir);
-        String[] filePaths = assets.list();
-        return filePaths;
+        ArrayList<String> filePaths = new ArrayList<>(Arrays.asList(assets.list()));
+        this.flagPaths = filePaths;
     }
 
-    private String getAssetsDir() {
-        return new File(".").getAbsolutePath() + "/assets/";
-    }
+    private void updateFlag(long seed) {
+        int randIndex = new Random(seed).nextInt(0, this.flagPaths.size());
 
-    private void nextFlag(long seed) {
-        int randIdx = new Random(seed).nextInt(0, this.flagPaths.length);
-        ImageIcon flagImage = new ImageIcon(this.assetsDir + this.flagPaths[randIdx]);
+        ImageIcon flagImage = new ImageIcon(this.assetsDir + this.flagPaths.get(randIndex));
         flagImage.setImage(flagImage.getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH));
         this.flagLabel.setIcon(flagImage);
+        this.flagPaths.remove(randIndex);
     }
 
     private void submitHandler() {
@@ -87,10 +95,14 @@ public class Game {
         String prepCurrentFlag = currentFlag.substring(currentFlag.length() - prepAnswer.length());
 
         if (prepareAnswer(answer).contentEquals(prepCurrentFlag)) {
-            System.out.println("Right Answer");
             this.score++;
             this.scoreLabel.setText(Integer.toString(this.score));
-            nextFlag(this.gameSeed);
+
+            if (this.score < this.maxScore) {
+                updateFlag(this.gameSeed);
+            } else {
+                this.flagLabel.setIcon(new ImageIcon("win.png"));
+            }
         }
 
         this.answerField.setText("");
