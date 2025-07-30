@@ -1,14 +1,14 @@
-BIN_DIR := bin
-SRC_DIR := src
-SRC_FILES := $(wildcard $(SRC_DIR)/*.java)
-BIN_FILES := $(wildcard $(BIN_DIR)/*.class)
-MAIN := src.Main
+CLASS_FILES := bin/src/Main.class bin/src/Game.class
+JAVA_FILES := src/Main.java src/Game.java
 
-run: $(BIN_FILES)
-	java -cp $(BIN_DIR) $(MAIN) 
+run: $(CLASS_FILES)
+	java -cp bin src.Main
 
-$(BIN_FILES): $(SRC_FILES)
-	javac -d $(BIN_DIR) $(SRC_FILES)
+$(CLASS_FILES): $(JAVA_FILES)
+	javac -d bin $(JAVA_FILES)
+
+$(JAVA_FILES):
+	echo "Error: Can't find $(JAVA_FILES)"
 
 clean:
-	rm -rf $(BIN_DIR)/*
+	rm -rf $(CLASS_FILES)
