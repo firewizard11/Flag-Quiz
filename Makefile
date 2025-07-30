@@ -1,10 +1,11 @@
-.PHONY: run build clean
+BIN_DIR := bin/
+SRC_DIR := src/
 
-run: build
+run: $(BIN_DIR)$*.class
 	java -cp bin src.Main
 
-build:
-	javac -d bin src/*
+$(BIN_DIR)$*.class:
+	javac -d $(BIN_DIR) $(SRC_DIR)*.java
 
 clean:
-	rm -r bin/*
+	rm -rf $(BIN_DIR)$*.class
