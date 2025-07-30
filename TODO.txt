@@ -1,0 +1,4 @@
+[] Use enter to submit
+[] Make GUI horizontal
+[] Make score "x / y"
+[] Add all country flags
