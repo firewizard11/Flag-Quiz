@@ -18,7 +18,6 @@ public class Game {
     private JTextField answerBox;
     private JButton answerButton;
 
-
     public void guiRun() {
         // Initiates variables and components then starts
         gameInit();
@@ -26,7 +25,6 @@ public class Game {
         this.rootWindow.setVisible(true);
     }
 
-    
     private void gameInit() {
         // Initiates Game state variables
         long seed = System.currentTimeMillis();
@@ -49,17 +47,19 @@ public class Game {
 
         this.scoreLabel = new JLabel();
         updateScore();
+
         this.flagFrame = new JLabel();
         nextFlag();
 
         JLabel answerLabel = new JLabel("Answer:");
         this.answerBox = new JTextField(20);
-
         answerLabel.setLabelFor(this.answerBox);
+
         this.answerButton = new JButton("Submit");
         this.answerButton.addActionListener(e -> {
             updateGame();
         });
+        rootWindow.getRootPane().setDefaultButton(answerButton);
 
         this.rootWindow.add(this.gamePanel);
         this.gamePanel.add(this.scoreLabel);
@@ -68,8 +68,6 @@ public class Game {
         this.gamePanel.add(this.answerBox);
         this.gamePanel.add(this.answerButton);
     }
-
-
 
     private void updateGame() {
         // Contains the game logic
@@ -104,8 +102,6 @@ public class Game {
         String prepped_answer = answer.toLowerCase().replace(" ", "").concat(".png");
         String currentFlag = this.flagFrame.getIcon().toString();
         String prepped_flag = currentFlag.substring("./flags/".length()).replace("_", "").toLowerCase();
-        System.out.println(currentFlag + "\n" + prepped_flag);
-        System.out.println("\n\n" + answer + "\n" + prepped_answer);
         return (prepped_answer.compareTo(prepped_flag) == 0);
     }
 }
