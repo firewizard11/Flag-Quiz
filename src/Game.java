@@ -1,3 +1,5 @@
+package src;
+
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
@@ -16,14 +18,8 @@ public class Game {
     private JTextField answerBox;
     private JButton answerButton;
 
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.gameInit();
-        game.guiInit();
-        game.guiRun();
-    }
-
     private void gameInit() {
+        // Initiates Game state variables
         long seed = System.currentTimeMillis();
 
         this.score = 0;
@@ -34,6 +30,7 @@ public class Game {
     }
 
     private void guiInit() {
+        // Initiates and configures Swing components
         this.rootWindow = new JFrame("Flag Quiz");
         this.rootWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.rootWindow.setSize(800, 600);
@@ -45,7 +42,7 @@ public class Game {
         updateScore();
         this.flagFrame = new JLabel();
         nextFlag();
-        
+
         JLabel answerLabel = new JLabel("Answer:");
         this.answerBox = new JTextField(20);
 
@@ -63,15 +60,19 @@ public class Game {
         this.gamePanel.add(this.answerButton);
     }
 
-	private void guiRun() {
+    public void guiRun() {
+        // Initiates variables and components then starts
+        gameInit();
+        guiInit();
         this.rootWindow.setVisible(true);
-	}
+    }
 
     private void updateGame() {
+        // Contains the game logic
         if (isCorrect()) {
             this.score++;
         }
-        
+
         nextFlag();
         this.answerBox.setText("");
         this.roundCounter++;
@@ -84,18 +85,21 @@ public class Game {
     }
 
     private void nextFlag() {
+        // Updates the flag image
         this.flagFrame.setIcon(new ImageIcon("./flags/" + this.flagPaths[this.genIdx.nextInt(this.roundMax)]));
     }
 
     private void updateScore() {
+        // Updates the score label
         this.scoreLabel.setText(this.score + " / " + this.roundMax);
     }
 
     private boolean isCorrect() {
+        // Checks if the user's answer is correct
         String answer = this.answerBox.getText();
         String prepped = answer.toLowerCase().replace(" ", "").concat(".png");
         String currentFlag = this.flagFrame.getIcon().toString();
         String prepped2 = currentFlag.substring("./flags/".length()).replace("_", "").toLowerCase();
         return (prepped.compareTo(prepped2) == 0);
-     }
+    }
 }

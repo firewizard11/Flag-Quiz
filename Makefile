@@ -1,8 +1,8 @@
-run: bin/Game.class
-	java -cp bin Game
+run: bin/Game.class bin/Main.class
+	java -cp bin src.Main
 
-bin/Game.class: Game.java
-	javac -d bin Game.java
+bin/Game.class bin/Main.class: src/Main.java src/Game.java
+	javac -sourcepath src -d bin src/Main.java src/Game.java
 
-Game.java:
-	echo "Can't find Game.java"
+src/Main.java src/Game.java:
+	echo "Can't find src files"
