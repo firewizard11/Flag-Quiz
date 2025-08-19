@@ -5,10 +5,12 @@ import java.util.*;
 import javax.swing.*;
 
 public class Game {
+
     private int score;
     private int roundCounter;
     private int roundMax;
     private Random genIdx;
+    private String flagFolder;
     private String[] flagPaths;
 
     private JFrame rootWindow;
@@ -29,9 +31,10 @@ public class Game {
         // Initiates Game state variables
         long seed = System.currentTimeMillis();
 
+        this.flagFolder = "./flags/";
         this.score = 0;
         this.roundCounter = 0;
-        this.flagPaths = new File("./flags/").list();
+        this.flagPaths = new File(this.flagFolder).list();
         this.roundMax = flagPaths.length;
         this.genIdx = new Random(seed);
     }
@@ -88,12 +91,14 @@ public class Game {
 
     private void nextFlag() {
         // Updates the flag image
-        this.flagFrame.setIcon(new ImageIcon("./flags/" + this.flagPaths[this.genIdx.nextInt(this.roundMax)]));
+        String nextFlagPath = this.flagFolder + this.flagPaths[this.genIdx.nextInt(this.roundMax)];
+        this.flagFrame.setIcon(new ImageIcon(nextFlagPath));
     }
 
     private void updateScore() {
         // Updates the score label
-        this.scoreLabel.setText(this.score + " / " + this.roundMax);
+        String updatedScore = this.score + " / " + this.roundMax;
+        this.scoreLabel.setText(updatedScore);
     }
 
     private boolean isCorrect() {
@@ -101,7 +106,7 @@ public class Game {
         String answer = this.answerBox.getText();
         String prepped_answer = answer.toLowerCase().replace(" ", "").concat(".png");
         String currentFlag = this.flagFrame.getIcon().toString();
-        String prepped_flag = currentFlag.substring("./flags/".length()).replace("_", "").toLowerCase();
+        String prepped_flag = currentFlag.toLowerCase().substring(this.flagFolder.length()).replace("_", "");
         return (prepped_answer.compareTo(prepped_flag) == 0);
     }
 }
