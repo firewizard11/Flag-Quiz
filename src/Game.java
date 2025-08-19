@@ -18,6 +18,15 @@ public class Game {
     private JTextField answerBox;
     private JButton answerButton;
 
+
+    public void guiRun() {
+        // Initiates variables and components then starts
+        gameInit();
+        guiInit();
+        this.rootWindow.setVisible(true);
+    }
+
+    
     private void gameInit() {
         // Initiates Game state variables
         long seed = System.currentTimeMillis();
@@ -60,12 +69,7 @@ public class Game {
         this.gamePanel.add(this.answerButton);
     }
 
-    public void guiRun() {
-        // Initiates variables and components then starts
-        gameInit();
-        guiInit();
-        this.rootWindow.setVisible(true);
-    }
+
 
     private void updateGame() {
         // Contains the game logic
@@ -97,9 +101,11 @@ public class Game {
     private boolean isCorrect() {
         // Checks if the user's answer is correct
         String answer = this.answerBox.getText();
-        String prepped = answer.toLowerCase().replace(" ", "").concat(".png");
+        String prepped_answer = answer.toLowerCase().replace(" ", "").concat(".png");
         String currentFlag = this.flagFrame.getIcon().toString();
-        String prepped2 = currentFlag.substring("./flags/".length()).replace("_", "").toLowerCase();
-        return (prepped.compareTo(prepped2) == 0);
+        String prepped_flag = currentFlag.substring("./flags/".length()).replace("_", "").toLowerCase();
+        System.out.println(currentFlag + "\n" + prepped_flag);
+        System.out.println("\n\n" + answer + "\n" + prepped_answer);
+        return (prepped_answer.compareTo(prepped_flag) == 0);
     }
 }
