@@ -14,3 +14,11 @@ java Game.java
 
 - <https://flagpedia.net/download>
 - <https://datahub.io/core/country-list>
+
+# Ideas
+- Multiplayer
+- Timer/Time limit
+- Answer submit automatically
+- No need for spaces
+- Can enter acronyms instead of country name
+
