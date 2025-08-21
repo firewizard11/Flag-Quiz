@@ -19,7 +19,7 @@ public class GameController {
     private void updateGame() {
         model.incrementRoundCount();
 
-        if (model.isAnswerCorrect(view.getUserInput())) {
+        if (model.isAnswerCorrect(view.getUserInput().strip().replace(" ", ""))) {
             model.incrementScore();
             view.updateScore(model.getScore());
         }

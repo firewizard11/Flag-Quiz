@@ -44,10 +44,12 @@ public class GameModel {
     }
 
     public String getCurrentFlagPath() {
-        return this.flagFolder + "\\" + this.currentFlag;
+        return this.flagFolder +  File.separator + this.currentFlag;
     }
 
     public boolean isAnswerCorrect(String answer) {
-        return this.currentFlag.equalsIgnoreCase(answer);
+        String prepped_flag;
+        prepped_flag = this.currentFlag.strip().replace(".png", "").replaceAll("\\s|_", "");
+        return prepped_flag.equalsIgnoreCase(answer);
     }
 }

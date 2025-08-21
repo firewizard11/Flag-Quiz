@@ -21,7 +21,9 @@ public class GameView {
         flagFrame = new JLabel();
         answerLabel = new JLabel("Answer:");
         answerBox = new JTextField(20);
+
         submitButton = new JButton("Submit");
+        rootWindow.getRootPane().setDefaultButton(submitButton);
 
         rootWindow.add(gamePanel);
 
