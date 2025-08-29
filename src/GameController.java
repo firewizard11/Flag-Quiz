@@ -9,7 +9,6 @@ public class GameController {
         view = new GameView();
 
         model.setNextFlag();
-        System.out.println(model.getCurrentFlagPath());
         view.updateScore(model.getScore());
         view.updateFlag(model.getCurrentFlagPath());
 
